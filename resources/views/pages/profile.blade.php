@@ -26,7 +26,10 @@
          
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                    <img class="profile-user-img img-responsive img-circle" src="{{$users[0]->image}}" alt="User profile picture">
+                <?php
+
+                ?>
+                    <img class="profile-user-img img-responsive img-circle" src="{{ !empty($users[0]->image)? $users[0]->image : '/./img/nobody.jpg'}}" alt="User profile picture">
 
                     <h3 class="profile-username text-center">{{$users[0]->firstname}} {{$users[0]->lastname}}</h3>
 
