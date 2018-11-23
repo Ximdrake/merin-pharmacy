@@ -1,0 +1,44 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+$fa-font-path: "../webfonts";
+
+// Bootstrap
+@import '~admin-lte/node_modules/bootstrap/dist/css/bootstrap.css';
+
+@import '~admin-lte/dist/css/AdminLTE.min.css';
+@import '~admin-lte/dist/css/skins/_all-skins.css';
+@import "~font-awesome/css/font-awesome.css";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+#makati_paginate, #makati_filter,
+#students_makati_paginate, #students_makati_filter {
+  float: right;
+}
+
+.no-footer{
+  margin-bottom: 0px;
+}
+
+table thead{
+  background-color: white;
+}
+
+.dataTables_empty{
+  text-align: center;
+}
+
+.DTFC_LeftBodyLiner{
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
