@@ -11,6 +11,7 @@
         "laravel/tinker": "^1.0",
         "nexmo/laravel": "^1.1",
         "uxweb/sweet-alert": "^2.0",
+        "vinkla/hashids": "^5.1",
         "yajra/laravel-datatables-oracle": "^8.0"
     },
     "require-dev": {

@@ -4,13 +4,13 @@
 @section('content')
 <!-- Content Header (Page header) -->
 
-<section class="content-header">
+<section class="content-header" style="background-color: #FFFFFF">
     <h1>
         Patient Profile
     </h1>
     <ol class="breadcrumb">
          <li>
-            <button class="btn btn-secondary bg-red add_student" data-toggle="modal" data-target="#prescription-form-modal">
+            <button class="btn btn-secondary bg-blue add_student" data-toggle="modal" data-target="#prescription-form-modal">
                 <i class="fa fa-plus-square"></i>
             </button>
         </li>
@@ -18,7 +18,7 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
+<section class="content" style="background-color: #FFFFFF">
 
     <div class="row">
         <div class="col-md-3">
@@ -32,9 +32,6 @@
                     <img class="profile-user-img img-responsive img-circle" src="{{ !empty($users[0]->image)? $users[0]->image : '/./img/nobody.jpg'}}" alt="User profile picture">
 
                     <h3 class="profile-username text-center">{{$users[0]->firstname}} {{$users[0]->lastname}}</h3>
-
-                    <p class="text-muted text-center">{{ $users[0]->status }}</p>
-
                     <ul class="list-group list-group-unbordered">
                         <li class="list-group-item">
                             <b>Age</b> <a class="pull-right"><?php  
@@ -62,11 +59,11 @@
                             <b>Address</b> <a class="pull-right">{{ $users[0]->address }}</a>
                         </li>
                         <li class="list-group-item">
-                            <b>Doctor</b> <a class="pull-right">Dr. {{ $users[0]->docfirstname }} {{ $users[0]->doclastname }}</a>
+                            <b>Doctor</b> <a class="pull-right">{{ $users[0]->doc_id }}</a>
                         </li>
                     </ul>
 
-                    <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                    <a href="#" class="btn btn-danger btn-block"><b>{{ $users[0]->status }}</b></a>
                 </div>
  
             </div>
@@ -92,6 +89,7 @@
                                     <th style="width: 50px;">On-Hand Quantity</th>
                                     <th style="width: 50px;">Signa</th>
                                     <th style="width: 50px;">Allergy</th>
+                                    <th style="width: 50px;">Schedule</th>
                                     <th style="width: 100px;">Refill Check</th>
                                     <th style="width: 100px;">Action</th>
 
@@ -189,7 +187,7 @@
                                     <label class="col-sm-4 col-form-label font-xs">Time</label>
                                     <div class="col-sm-8">
                                         <input name="time" id="time" type="text" class="form-control font-xs"
-                                            placeholder="ex. 8 am">
+                                            placeholder="ex. 8:00am-1:00pm-5:30pm-9:45pm">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -307,7 +305,7 @@
                                     <label class="col-sm-4 col-form-label font-xs">Time</label>
                                     <div class="col-sm-8">
                                         <input name="time" id="time_edit" type="text" class="form-control font-xs"
-                                            placeholder="ex. 8 am">
+                                            placeholder="ex. 8:00am-1:00pm-5:30pm-9:45pm">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -372,6 +370,7 @@
                 {data: 'quantity', name: 'quantity'},
                 {data: 'signa', name: 'signa'},
                 {data: 'allergy', name: 'allergy'},
+                {data: 'time', name: 'time'},
                 {data: 'refill_check', name: 'refill_check'},
                 {data: "action", orderable:false,searchable:false}
                  

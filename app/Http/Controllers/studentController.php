@@ -64,14 +64,13 @@ class studentController extends Controller
 
     public function makati(){
         $users= DB::table('patients')
-            ->join('doctors', 'doctors.id', '=', 'patients.doc_id')
-            ->select('patients.*','doctors.firstname as docfirstname','doctors.lastname as doclastname','patients.image as image')->get();
+            ->select('patients.*','patients.image as image')->get();
         return Datatables::of($users)
         ->editColumn('name', function($data){
             return $data->firstname.' '.$data->middlename.' '.$data->lastname;
         })
         ->editColumn('doctor', function($data){
-            return 'Dr. '.$data->docfirstname.' '.$data->doclastname;
+            return $data->doc_id;
         })
         ->addColumn('action', function($data){
                  return '<button class="btn btn-xs "><a href="patients/'.$data->id.'"><i class="fa fa-eye"></i></a></button>&nbsp;&nbsp;&nbsp; <button class="btn btn-xs btn-warning update_patient waves-effect" id="'.$data->id.'" data-toggle="modal" data-target="#edit_form_modal"><i class="fa fa-edit"></i></button> &nbsp;
@@ -84,8 +83,7 @@ class studentController extends Controller
     {
         
         $users= DB::table('patients')
-            ->join('doctors', 'doctors.id', '=', 'patients.doc_id')
-            ->select('patients.*','doctors.firstname as docfirstname','doctors.lastname as doclastname')
+            ->select('patients.*')
             ->where('patients.id',$id)
             ->get();
        
@@ -123,8 +121,7 @@ class studentController extends Controller
 
     public function Patientdetails(Request $request){
          $users= DB::table('patients')
-            ->join('doctors', 'doctors.id', '=', 'patients.doc_id')
-            ->select('patients.*','doctors.firstname as docfirstname','doctors.lastname as doclastname')
+            ->select('patients.*')
             ->where('patients.id',$request->id)
             ->get();
 
@@ -140,6 +137,7 @@ class studentController extends Controller
                     $patient->contact_number = $request->contact;
                     $patient->birthdate =$request->bday;
                     $patient->gender = $request->gender;
+                    $patient->doc_id = $request->doc_id;
                     $patient->address   = $request->address;
                     $patient->status    = "On Maintenance";          
                     $patient->image_ext='jpg';

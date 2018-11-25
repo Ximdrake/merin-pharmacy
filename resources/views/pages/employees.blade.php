@@ -2,17 +2,17 @@
 
 @section('content')
 <!-- Content Header (Page header) -->
-<section class="content-header">
+<section class="content-header" style="background-color: #FFFFFF">
     <h1>
         Doctors Page
     </h1>
     <ol class="breadcrumb">
-        <li><button class="btn btn-secondary bg-red" data-toggle="modal" data-target="#add_doctor_modal"><i class="fa fa-plus-square"></i></button></li>
+        <li><button class="btn btn-secondary bg-blue" data-toggle="modal" data-target="#add_doctor_modal"><i class="fa fa-plus-square"></i></button></li>
     </ol>
 </section>
 
 <!-- Main content -->
-<section class="content">
+<section class="content" style="background-color: #FFFFFF" >
 
     <div class="row">
         <br>
@@ -36,8 +36,7 @@
                         </table>
                     </div>
                     <!-- /.tab-pane -->
-                    <div class="tab-pane" id="timeline">
-                    </div>
+                     
                 <!-- /.tab-pane -->
                 </div>
             <!-- /.tab-content -->
@@ -230,6 +229,7 @@
 
         </div>
         </div>
+
     
 @endsection
 

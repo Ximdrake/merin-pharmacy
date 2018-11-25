@@ -5,9 +5,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="csrf-token" content="{{ csrf_token() }}">
-	<title>PharmAssist</title>
+	<title>Merin Pharmacy</title>
 
-	<link rel="shortcut icon" type="image/png" href="/./img/favicon.png"/>
+	<link rel="shortcut icon" type="image/png" href="/./img/merin.jpg"/>
 	<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.5/css/fixedColumns.bootstrap.min.css">
 	<link rel="stylesheet" href="/css/app.css">
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -16,15 +16,15 @@
 <div class="wrapper">
   	<header class="main-header">
 		<!-- Logo -->
-		<a href="" class="logo" style="background-color: #ae0c07">
+		<a href="" class="logo" style="background-color: #5a055b">
 			<!-- mini logo for sidebar mini 50x50 pixels -->
-			<span class="logo-mini"><img src="/./img/pharma2.png" alt="pharmAssist logo" style="width: 40px; height: 40px;"></span>
+			<span class="logo-mini"><img src="/./img/merin.jpg" alt="pharmAssist logo" style="width: 40px; height: 40px;"></span>
 			<!-- logo for regular state and mobile devices -->
-			<span class="logo-lg"><img src="/./img/pharma2.png" alt="pharmAssist logo" style="width: 40px; height: 40px;"><b>&nbsp PharmAssist</b></span>
+			<span class="logo-lg"><img src="/./img/merin.jpg" alt="pharmAssist logo" style="width: 32px; height: 32px;"><b>&nbsp Merin Pharmacy</b></span>
 		</a>
 
 		<!-- Header Navbar: style can be found in header.less -->
-		<nav class="navbar navbar-static-top" style="background-color: #ae0c07">
+		<nav class="navbar navbar-static-top" style="background-color: #5a055b">
 			<!-- Sidebar toggle button-->
 			<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
 				<span class="sr-only">Toggle navigation</span>
@@ -35,19 +35,19 @@
 					<!-- User Account: style can be found in dropdown.less -->
 					<li class="dropdown user user-menu">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<img src="/./img/avatar5.png" class="user-image" alt="User Image">
-							<span class="hidden-xs">{{ Auth::user()->firstname }}</span>
+							<img src="{{ !empty(Auth::user()->image)? Auth::user()->image : '/./img/nobody.jpg'}}"  class="user-image" alt="User Image">
+							<span class="hidden-xs">{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</span>
 						</a>
 						<ul class="dropdown-menu">
 							<!-- User image -->
 							<li class="user-header">
-								<img src="/./img/avatar5.png" class="img-circle" alt="User Image">
+								<img src="{{ !empty(Auth::user()->image)? Auth::user()->image : '/./img/nobody.jpg'}}"  class="img-circle" alt="User Image">
 							
 							</li>
 							<!-- Menu Footer-->
 							<li class="user-footer">
 								<div class="pull-left">
-									<a href="#" class="btn btn-default btn-flat">Profile</a>
+									<a  href="/userProfile" class="btn btn-default btn-flat">Profile</a>
 								</div>
 								<div class="pull-right">
 									<a href="/logout" class="btn btn-default btn-flat">Sign out</a>
@@ -62,7 +62,7 @@
 	@include('includes.sidebar')
 
 	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper">
+	<div class="content-wrapper" style="background-color: #FFFFFF"	>
 		@yield('content')
     <!-- /.content -->
   	</div>
@@ -72,8 +72,8 @@
 		<div class="pull-right hidden-xs">
 			<b>Developed By</b> <a href="https://www.facebook.com/solidscript/">Solid Script Web Systems</a>
 		</div>
-    	<strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
-    	reserved. PharmAssist 2018
+    	<strong>Merin Pharmacy </strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>. All rights
+    	reserved.
   	</footer>
 </div>
 <!-- ./wrapper -->
@@ -92,7 +92,7 @@
 
 	 function tick(){
 	 	restart++;
-	 	if(restart==500){
+	 	if(restart==200){
 	 		location.reload();
 	 	}
     //get the mins of the current time
@@ -102,15 +102,16 @@
     hours = hours % 12;
     hours = hours ? hours : 12;
     var strTime;
-
-    if(mins == "55"){
-    	if(hours==12){
-         strTime = (1) +" "+ ampm;   
-        }else{
-         strTime = (hours+1) +" "+ ampm;
+    if(mins==25||mins==55){
+    	console.log("maoni");
+    	if(mins==25){
+        	strTime = (hours)+":"+(mins+5)+ampm;
+        	console.log(strTime);
+        }else if (mins==55&&hours==12){
+        	strTime = (1)+":00"+ampm;
+        }else if(mins==55&&hours!=12){
+        	strTime = (hours+1)+":00"+ampm;
         }
-       
-        console.log(strTime);
        $.ajax({
          headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -120,8 +121,7 @@
         dataType:'text',
         data:{data:strTime},
         success:function(data){
-            console.log(data);
-            setTimeout(() => { clearInterval(time)});
+           //setTimeout(() => { clearInterval(time)});
            
         },
         error: function(data){

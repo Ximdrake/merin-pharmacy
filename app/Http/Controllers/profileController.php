@@ -11,6 +11,7 @@ use DB;
 use Yajra\Datatables\Datatables;
 use Nexmo\Laravel\Facade\Nexmo;
 use Carbon\Carbon;
+use App\User;
 
 class profileController extends Controller
 {
@@ -21,55 +22,52 @@ class profileController extends Controller
 
     public function index()
     {
-        $users= DB::table('patients')
-            ->join('doctors', 'doctors.id', '=', 'patients.doc_id')
-            ->select('patients.*','doctors.firstname as docfirstname','doctors.lastname as doclastname')->get();
-        $doctors=Doctor::All();
-        return view('pages.profile', compact('users','doctors'));
+        $users= DB::table('users')
+            ->select('users.*')->get();
+        return view('pages.userProfile', compact('users'));
     }
 
+     
 
      function sendMessage(Request $request){
 
        $medicine = Prescription::all();
 
      foreach($medicine as $med){
-            if($med->time==strtolower($request->data)){ 
-              var_dump($med->pid);
-
+            $sched = explode('-' , $med->time);
+          foreach($sched as $i=>$key) {                   
+            if($key==strtolower($request->data)){ 
               $prescription =  Prescription::where('id', '=',$med->id)->first();
               $minutes = Carbon::now()->diffInMinutes($prescription->updated_at); 
-              // if($minutes>5){
-              //   $prescription->quantity = $prescription->quantity-$med->per_day;
-              //     $prescription->save();  
+              if($minutes>=1){
+                $prescription->quantity = $prescription->quantity-$med->per_day;
+                  $prescription->save();  
 
-              //     $patient= Patient::where('id', '=',$med->pid)->first();
-              //     $contact = $patient->contact_number;
-              //     try{
-              //       Nexmo::message()->send([
-              //           'to'   => $contact,
-              //           'from' => 'PharmaSys',
-              //           'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$med->time." You have ".$prescription->quantity."pcs left in your possession.  - PharmASSIST"
-              //       ]);
-              //     }catch(\Exception $e){
-              //          $data = array('name'=>"PharmASSIST",
-              //           'email'=>"asidorx@gmail.com");
-              //               Mail::send([],[],function($message) use ($data){
-              //               $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-              //               ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
-              //               $message->from('pharmassisthesis@gmail.com','PharmASSIST');
-              //               });   
-              //   }
-              
-              //  var_dump($contact);
-
-              // }
-              
-              
+                  $patient= Patient::where('id', '=',$med->pid)->first();
+                  $contact = $patient->contact_number;
+                  try{
+                    Nexmo::message()->send([
+                        'to'   => $contact,
+                        'from' => 'Merin Pharmacy',
+                        'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity."pcs left in your possession.  - Merin Pharmacy"
+                    ]);                    
+                  }catch(\Exception $e){
+                       $data = array('name'=>"PharmASSIST",
+                        'email'=>"asidorx@gmail.com");
+                            Mail::send([],[],function($message) use ($data){
+                            $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
+                            ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
+                            $message->from('pharmassisthesis@gmail.com','PharmASSIST');
+                            }); 
+                }
+              }
             }
+              }
+
+           
             }
 
-       return json_encode($request->data);
+       
 
     }
 
@@ -123,9 +121,19 @@ class profileController extends Controller
         return json_encode($request->quantity);
         }
 
-    public function deletePrescription(Request $request){
-            
-    }
+    public function updateUser(Request $request){
+           
+            $users= User::find($request->id);
+            $users->firstname = $request->first_name; 
+            $users->lastname = $request->last_name;
+            $users->email = $request->contact;
+            $users->password = bcrypt($request->new_pass);
+            $users->image_ext='jpg';
+            $users->image = $request->captured_photo_edit;
+            $users->save();
+         
+        return json_encode("OK");
+        }
 
 
     }

@@ -13,7 +13,7 @@ class patient_seeder extends Seeder
     {
        {$data = [
             [
-            'doc_id' => 1,
+            'doc_id' => 'Dr. Ximdrake Asidor',
             'firstname'=>'John',
             'middlename' => 'Mao',
             'lastname' => 'Doe',
@@ -24,7 +24,7 @@ class patient_seeder extends Seeder
             'status' => 'On Maintenance',
             ],
             [
-            'doc_id' => 2,
+            'doc_id' => 'Dr. Medrell Asidor',
             'firstname'=>'Marie',
             'middlename' => 'Ni',
             'lastname' => 'Suarez',

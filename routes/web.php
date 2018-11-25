@@ -52,6 +52,8 @@ Route::get('/doctorDetails', 'employeeController@doctorDetails');
 Route::get('/deleteDoctor', 'employeeController@deleteDoctor');
 Route::post('/updateDoctor', 'employeeController@updateDoctor');
 Route::get('/makatiEmployee', 'employeeController@makatiEmployee');
+Route::get('/userProfile', 'profileController@index');
+Route::post('/updateUser', 'profileController@updateUser');
 
 //EMPLOYEE ROUTES -- END
 

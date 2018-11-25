@@ -1,19 +1,19 @@
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
 		<!-- sidebar: style can be found in sidebar.less -->
-		<section class="sidebar">
+		<section class="sidebar" >
 			<!-- Sidebar user panel -->
 			<div class="user-panel">
 				<div class="pull-left image">
-					<img src="/./img/avatar5.png" class="img-circle" alt="User Image">
+					<img src="{{ !empty(Auth::user()->image)? Auth::user()->image : '/./img/nobody.jpg'}}" class="img-circle" alt="User Image" >
 				</div>
         		<div class="pull-left info"> 
-					<p>{{ Auth::user()->firstname }}</p>
+					<p>{{ Auth::user()->firstname }} {{ Auth::user()->lastname }}</p>
         		</div>
       		</div>
 			<!-- sidebar menu: : style can be found in sidebar.less -->
 			<ul class="sidebar-menu" data-widget="tree">
-				<li class="header">MAIN NAVIGATION</li>
+				<li class="header" style="color: #FFFFFF" >MAIN NAVIGATION</li>
 				
 				<li class="{{ (Request::path() == 'dashboard') ? 'active' : '' }}">
 					<a href="/dashboard" >
@@ -39,13 +39,7 @@
 					</a>
 				</li>
 
-                <li>
-					<a href="#">
-						<i class="fa fa-file-alt"></i> <span>Documentation</span>
-						<span class="pull-right-container">
-						</span>
-					</a>
-				</li>
+                
       		</ul>
     	</section>
     	<!-- /.sidebar -->

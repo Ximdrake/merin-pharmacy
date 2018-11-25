@@ -20,9 +20,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('image_ext')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
+        DB::statement("ALTER TABLE users ADD image LONGBLOB");
     }
 
     /**

@@ -2,13 +2,13 @@
 
 @section('content')
 <!-- Content Header (Page header) -->
-<section class="content-header">
+<section class="content-header" style="background-color: #FFFFFF">
     <h1>
         Patient List
     </h1>
-    <ol class="breadcrumb">
+    <ol class="breadcrumb" style="background-color: #FFFFFF">
         <li>
-            <button class="btn btn-secondary bg-red add_student" data-toggle="modal" data-target="#patient-form-modal">
+            <button class="btn btn-secondary bg-blue add_student" data-toggle="modal" data-target="#patient-form-modal">
                 <i class="fa fa-plus-square"></i>
             </button>
         </li>
@@ -16,7 +16,7 @@
 </section>
 
 <!-- Main content -->
-<section class="content">
+<section class="content" style="background-color: #FFFFFF">
 
     <div class="row">
         <br>
@@ -142,9 +142,10 @@
                                     <div class="col-sm-8">
                                         <select name="doc_id" id="doc_id" class="form-control font-xs" >
                                             @foreach($doctors as $datum)  
-                                                    <option value="{{$datum->id}}">Dr. {{$datum->firstname}} {{$datum->lastname}}</option>
-                                              
+                                                    <option class="non" value="Dr. {{$datum->firstname}} {{$datum->lastname}}">Dr. {{$datum->firstname}} {{$datum->lastname}}</option>   
                                             @endforeach
+                                            <option class="editable" value="other">Other</option>
+                                            <input class="editOption form-control font-xs"  style="display:none;"></input>
                                         </select>
                                     </div>
                                 </div>
@@ -208,7 +209,7 @@
                                     <label class="col-sm-4 col-form-label font-xs">Time</label>
                                     <div class="col-sm-8">
                                         <input name="time" id="time" type="text" class="form-control font-xs"
-                                            placeholder="ex. 8 am">
+                                            placeholder="ex. 8:00am-1:00pm-5:30pm-9:45pm">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -234,7 +235,7 @@
                      
                                 <div class="pull-right">
                                     <a class="btn btn-default" data-dismiss="modal" id="employee-modal-cancel">Cancel</a>
-                                    <button id="employee-form-submit" class="btn btn-danger push-right" style="color:white">Confirm</button>
+                                    <button type="submit" id="employee-form-submit" class="btn btn-primary push-right" style="color:white">Confirm</button>
                                 </div>
             
     
@@ -295,6 +296,13 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label font-xs">Doctor</label>
+                                    <div class="col-sm-8">
+                                        <input name="doc_id" id="doctor" type="text" class="form-control font-xs"
+                                            placeholder="Contact">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-sm-4 col-form-label font-xs">Contact</label>
                                     <div class="col-sm-8">
                                         <input name="contact" id="contact_edit" type="text" class="form-control font-xs"
@@ -350,7 +358,7 @@
               
                      <div  class="push-right" style="padding-bottom:10px; ">
                                     <a class="btn btn-default" data-dismiss="modal" id="patient-modal-cancel">Cancel</a>
-                                    <button id="update-form-submit" class="btn btn-danger push-right" style="color:white">Confirm</button>
+                                    <button id="update-form-submit" class="btn btn-primary push-right" style="color:white">Confirm</button>
                     </div>
                      
                 </form>
@@ -375,8 +383,31 @@
   width: 50px;
   background-size: cover;
 }
+
 </style>
 <script>
+
+        var initialText = $('.editable').val();
+        $('.editOption').val(initialText);
+
+        $('#doc_id').change(function(){
+        var selected = $('option:selected', this).attr('class');
+        var optionText = $('.editable').text();
+
+        if(selected == "editable"){
+          $('.editOption').show();
+
+          
+          $('.editOption').keyup(function(){
+              var editText = $('.editOption').val();
+              $('.editable').val(editText);
+              $('.editable').html(editText);
+          });
+
+        }else{
+          $('.editOption').hide();
+        }
+        });
 
 
         //DATATABLES -- START
@@ -415,7 +446,6 @@
             alert("I want this to appear after the modal has opened!");
             var  id = $(this).attr("id");
              $("#patient_id").val(2);
-            console.log(id);
         });
         $(document).on("click", ".update_patient", function(e){
                 e.preventDefault();
@@ -427,7 +457,6 @@
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-                        console.log(data[0]);
                         $('#action').val('update');
                         $('#patient_id_edit').val(data[0].id);
                         $('#first_name_edit').val(data[0].firstname);
@@ -438,6 +467,7 @@
                         $('#guardian_edit').val(data[0].spouse_g);
                         $('#gender_edit').val(data[0].gender);
                         $('#bday_edit').val(data[0].birthdate);
+                        $('#doctor').val(data[0].doc_id);
                         if(data[0].image!=null){
                             $('#upload-image-display_edit').attr('src',data[0].image).trigger('change');
                          }else{
@@ -467,7 +497,6 @@ $(document).on("click", ".delete_patient", function(e){
                         method: "get",
                         data:{id:id},
                         success:function(data){
-                            console.log(data);
                             students_makati.ajax.reload();
                              //swal("Deleted!", "The record has been deleted.", "success");
                         }
@@ -485,7 +514,6 @@ $("#photo_edit").change(function() {
     readURL2(this);
     });
     function readURL(input) {
-    console.log(input); 
     if (input.files && input.files[0]) {
       var reader = new FileReader();
       reader.onload = function(e) {
@@ -498,7 +526,6 @@ $("#photo_edit").change(function() {
 
 }
 function readURL2(input) {
-    console.log(input); 
     if (input.files && input.files[0]) {
       var reader = new FileReader();
       reader.onload = function(e) {
@@ -527,7 +554,6 @@ $(document).on("click","#employee-form-submit", function(e) {
     input.html('Saving...'); 
         var formData = $('#employee-form').serialize();
         $("#employee-form input").removeClass('is-invalid');
-        console.log(formData);
             $.ajax({
                 url: '/addPatient',
                 method: 'post',
@@ -544,7 +570,7 @@ $(document).on("click","#employee-form-submit", function(e) {
                 }, error: function(data){
                         button.disabled = false;
                         input.html('Save');
-                       swal("Oh no!", "Something went wrong, try again.", "error")
+                       swal("Please Fill Up Everything", "Something went wrong, try again.", "error")
                     }
              
         });
@@ -556,7 +582,6 @@ $(document).on("click","#update-form-submit", function(e) {
     button.disabled = true;
     input.html('Saving...'); 
         var formData = $('#patient_edit').serialize();
-        console.log(formData);
             $.ajax({
                 url: '/editPatient',
                 method: 'post',

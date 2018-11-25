@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Patient;
+use App\Doctor;
+use App\Prescription;
 use Illuminate\Http\Request;
 
 class dashboardController extends Controller
@@ -23,6 +25,9 @@ class dashboardController extends Controller
      */
     public function index()
     {
-        return view('pages.dashboard');
+          $doctors=Doctor::All();
+            $patients=Patient::All();
+            $prescriptions=Prescription::All();
+       return view('pages.dashboard', compact('patients','doctors','prescriptions'));
     }
 }

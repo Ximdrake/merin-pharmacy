@@ -162,6 +162,8 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Nexmo\Laravel\NexmoServiceProvider::class,
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
+        Vinkla\Hashids\HashidsServiceProvider::class,
+
 
         /*
          * Package Service Providers...
@@ -227,6 +229,7 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Nexmo' => Nexmo\Laravel\Facade\Nexmo::class,
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
         'Carbon' => 'Carbon\Carbon'
 
     ],
