@@ -321,6 +321,13 @@
                                             placeholder="ex. 2">
                                     </div>
                                 </div>
+                                 <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label font-xs">Prescription Took</label>
+                                    <div class="col-sm-8">
+                                        <input name="quantity_took" id="quantity_took" type="text" class="form-control font-xs"
+                                            placeholder="">
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label font-xs">Refill Check</label>
                                     <div class="col-sm-8">
@@ -440,6 +447,7 @@ $(document).on("click","#prescription-form-submit", function(e) {
                         $('#allergy_edit').val(data.allergy);
                         $('#time_edit').val(data.time);
                         $('#per_day_edit').val(data.per_day);
+                        $('#quantity_took').val(data.quantity_took);
                         $('#refill_check_edit').val(data.refill_check);
                         // refresh_expense_table();
                     }

@@ -107,6 +107,12 @@ class studentController extends Controller
                  return '<button class="btn btn-xs btn-warning prescription-edit waves-effect" id="'.$data->id.'" data-toggle="modal" data-target="#prescription_edit_modal"><i class="fa fa-edit"></i></button> &nbsp;
                      <button class="btn btn-xs btn-danger delete_prescription waves-effect" id="'.$data->id.'"><i class="fa fa-trash"></i></button>';          
         })
+         ->editColumn('status', function($data){
+                    if($data->status==null){
+                         return "On Going";
+                    }
+            
+        })
         ->make(true);
     }
 

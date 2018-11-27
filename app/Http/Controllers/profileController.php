@@ -168,6 +168,7 @@ class profileController extends Controller
             $prescription->allergy = $request->allergy;
             $prescription->time = $request->time;
             $prescription->per_day = $request->per_day;
+            $prescription->quantity_took = $request->quantity_took;
             $prescription->refill_check = $request->refill_check;    
             $prescription->save(); 
         return json_encode($request->quantity);
