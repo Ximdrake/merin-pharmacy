@@ -40,7 +40,7 @@ class profileController extends Controller
             if($key==strtolower($request->data)){ 
               $prescription =  Prescription::where('id', '=',$med->id)->first();
               $minutes = Carbon::now()->diffInMinutes($prescription->updated_at); 
-              if($minutes<=1 && $prescription->status!="Done"){
+              if($minutes>=1 && $prescription->status!="Done"){
                
                 if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity!=0){
                  $prescription->quantity = $prescription->quantity-$med->per_day;
@@ -51,7 +51,9 @@ class profileController extends Controller
                          if($prescription->quantity_took==$prescription->pres_quantity&&$prescription->quantity==0){
                              $prescription->status = "Done";
                              $prescription->save();
-                            var_dump($prescription->pres_quantity);
+                            $patient= Patient::where('id', '=',$med->pid)->first();
+                            $contact = $patient->contact_number;
+                            var_dump($contact);
                              try{
                                 Nexmo::message()->send([
                                     'to'   => $contact,
@@ -71,7 +73,7 @@ class profileController extends Controller
                            else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity==0){
                                 $patient= Patient::where('id', '=',$med->pid)->first();
                                 $contact = $patient->contact_number;
-                                var_dump("WAALA NA");
+                                var_dump("WAALA NA".$contact);
                                 // ?var_dump($prescription->quantity_took);
                                 // var_dump($prescription->pres_quantity);
                                 // var_dump("hutdag tambal");
@@ -91,7 +93,9 @@ class profileController extends Controller
                                         }); 
                                     }                    
                             }else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity!=0){
-                               // var_dump("naa pa");
+                                 $patient= Patient::where('id', '=',$med->pid)->first();
+                                $contact = $patient->contact_number;
+                                var_dump("naa pa".$contact);
                                  try{
                             Nexmo::message()->send([
                                 'to'   => $contact,
@@ -103,7 +107,7 @@ class profileController extends Controller
                                 'email'=>"asidorx@gmail.com");
                                     Mail::send([],[],function($message) use ($data){
                                     $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                                    ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number :'.$contact);
+                                    ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number :');
                                     $message->from('pharmassisthesis@gmail.com','PharmASSIST');
                                     }); 
                                     }
