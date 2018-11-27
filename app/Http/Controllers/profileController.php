@@ -35,17 +35,22 @@ class profileController extends Controller
        $medicine = Prescription::all();
 
      foreach($medicine as $med){
+
             $sched = explode('-' , $med->time);
+
           foreach($sched as $i=>$key){                   
             if($key==strtolower($request->data)){ 
+                var_dump($request->data);
               $prescription =  Prescription::where('id', '=',$med->id)->first();
               $minutes = Carbon::now()->diffInMinutes($prescription->updated_at); 
               if($minutes>=1 && $prescription->status!="Done"){
-               
-                if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity!=0){
+                echo "maoni";
+
+                var_dump("DIRI RA KUTOB");
+             
                  $prescription->quantity = $prescription->quantity-$med->per_day;
                  $prescription->quantity_took=$prescription->quantity_took+$med->per_day;
-                 $prescription->save();  
+                 
                  $patient= Patient::where('id', '=',$med->pid)->first();
                  $contact = $patient->contact_number;
                          if($prescription->quantity_took==$prescription->pres_quantity&&$prescription->quantity==0){
@@ -53,7 +58,7 @@ class profileController extends Controller
                              $prescription->save();
                             $patient= Patient::where('id', '=',$med->pid)->first();
                             $contact = $patient->contact_number;
-                            var_dump($contact);
+                            var_dump("humana".$contact." ".$patient->firstname);
                              try{
                                 Nexmo::message()->send([
                                     'to'   => $contact,
@@ -69,19 +74,17 @@ class profileController extends Controller
                                         $message->from('pharmassisthesis@gmail.com','PharmASSIST');
                                         }); 
                                 }
-                            }
-                           else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity==0){
+                             
+                            }else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity==0){
+                                $prescription->save();  
                                 $patient= Patient::where('id', '=',$med->pid)->first();
                                 $contact = $patient->contact_number;
-                                var_dump("WAALA NA".$contact);
-                                // ?var_dump($prescription->quantity_took);
-                                // var_dump($prescription->pres_quantity);
-                                // var_dump("hutdag tambal");
-                                try{
+                                var_dump("WAALA NA".$contact.$patient->firstname);
+                                 try{
                                 Nexmo::message()->send([
                                     'to'   => $contact,
                                     'from' => 'Merin Pharmacy',
-                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have".$prescription->quantity." quantity of ".$prescription->generic_name."(".$prescription->brand_name.") in your possession. You need to refill your prescription to maintain your medication. Thank You.  - Merin Pharmacy"
+                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to inform you that you have 0 quantity left in your possession of ".$prescription->generic_name."(".$prescription->brand_name."). You need to refill your prescription to maintain your medication. Have a nice day!  - Merin Pharmacy"
                                 ]);                    
                               }catch(\Exception $e){
                                    $data = array('name'=>"PharmASSIST",
@@ -91,16 +94,18 @@ class profileController extends Controller
                                         ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number: '.$contact);
                                         $message->from('pharmassisthesis@gmail.com','PharmASSIST');
                                         }); 
-                                    }                    
+                                }
+                                      
                             }else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity!=0){
+                                 $prescription->save();
                                  $patient= Patient::where('id', '=',$med->pid)->first();
                                 $contact = $patient->contact_number;
-                                var_dump("naa pa".$contact);
-                                 try{
+                                var_dump("naa pa".$contact.$patient->firstname);
+                                       try{
                             Nexmo::message()->send([
                                 'to'   => $contact,
                                 'from' => 'Merin Pharmacy',
-                                'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity."pcs left in your possession.  - Merin Pharmacy"
+                                'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity." left in your possession.  - Merin Pharmacy"
                             ]);                    
                           }catch(\Exception $e){
                                $data = array('name'=>"PharmASSIST",
@@ -112,17 +117,11 @@ class profileController extends Controller
                                     }); 
                                     }
                             }
-                    
-                 
-                        }else if($prescription->quantity_took==$prescription->pres_quantity&&$prescription->quantity==0){
-                             $prescription->status = "Done";
-                             $prescription->save(); 
-                        }
-                    }
                 }
             }      
         }
     }
+}
 
 
 

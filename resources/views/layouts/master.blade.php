@@ -103,9 +103,10 @@
     hours = hours ? hours : 12;
     var strTime;
     if(mins==25||mins==55){
+    	
     	if(mins==25){
         	strTime = (hours)+":"+(mins+5)+ampm;
-        	console.log(strTime);
+        	//console.log(strTime);
         }else if (mins==55&&hours==12){
         	strTime = (1)+":00"+ampm;
         }else if(mins==55&&hours!=12){
@@ -121,7 +122,7 @@
         data:{data:strTime},
         success:function(data){
         	console.log(data);
-        	prescription.ajax.reload();           
+        	prescription.ajax.reload();        
         },
         error: function(data){
            console.log('error');
@@ -130,7 +131,7 @@
        
      }
 }
-let time = setInterval(tick, 5000);
+let time = setInterval(tick, 10000);
 </script>
 @yield('script')
 </body>

@@ -96,6 +96,7 @@
                                     <th style="width: 50px;">Schedule</th>
                                     <th style="width: 100px;">Refill Check</th>
                                     <th style="width: 100px;">Status</th>
+                                    <th style="width: 100px;">Prescription Took</th>
                                     <th style="width: 100px;">Action</th>
 
 
@@ -378,6 +379,7 @@
                 {data: 'time', name: 'time'},
                 {data: 'refill_check', name: 'refill_check'},
                 {data: 'status', name: 'status'},
+                {data: 'quantity_took', name: 'quantity_took'},
                 {data: "action", orderable:false,searchable:false}
                  
             ],
