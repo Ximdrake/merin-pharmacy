@@ -105,7 +105,7 @@ class profileController extends Controller
                             Nexmo::message()->send([
                                 'to'   => $contact,
                                 'from' => 'Merin Pharmacy',
-                                'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity." left in your possession.  - Merin Pharmacy"
+                                'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity." left in your possession.  - Merin Pharmacy"
                             ]);                    
                           }catch(\Exception $e){
                                $data = array('name'=>"PharmASSIST",

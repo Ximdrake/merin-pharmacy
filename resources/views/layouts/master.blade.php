@@ -121,8 +121,7 @@
         dataType:'text',
         data:{data:strTime},
         success:function(data){
-        	console.log(data);
-        	prescription.ajax.reload();        
+        	console.log(data);        
         },
         error: function(data){
            console.log('error');
