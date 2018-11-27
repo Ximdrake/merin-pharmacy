@@ -63,7 +63,11 @@
                         </li>
                     </ul>
 
-                    <a href="#" class="btn btn-danger btn-block"><b>{{ $users[0]->status }}</b></a>
+                    <?php if(count($medicine)==count($meds)){
+                    echo '<a href="#" class="btn btn-primary btn-block"><b>Full</b></a>';}
+                    else{ 
+                      echo '<a href="#" class="btn btn-danger btn-block"><b>On Maintenance</b></a>';;
+                    }?>
                 </div>
  
             </div>
@@ -91,6 +95,7 @@
                                     <th style="width: 50px;">Allergy</th>
                                     <th style="width: 50px;">Schedule</th>
                                     <th style="width: 100px;">Refill Check</th>
+                                    <th style="width: 100px;">Status</th>
                                     <th style="width: 100px;">Action</th>
 
 
@@ -372,6 +377,7 @@
                 {data: 'allergy', name: 'allergy'},
                 {data: 'time', name: 'time'},
                 {data: 'refill_check', name: 'refill_check'},
+                {data: 'status', name: 'status'},
                 {data: "action", orderable:false,searchable:false}
                  
             ],

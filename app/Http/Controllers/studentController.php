@@ -86,8 +86,16 @@ class studentController extends Controller
             ->select('patients.*')
             ->where('patients.id',$id)
             ->get();
-       
-        return view('pages.profile', compact('users'));
+        $medicine= DB::table('prescriptions')
+            ->select('prescriptions.status')
+            ->where('prescriptions.pid',$id)
+            ->where('status','Done')
+            ->get();
+        $meds= DB::table('prescriptions')
+            ->select('prescriptions.status')
+            ->where('prescriptions.pid',$id)
+            ->get();
+        return view('pages.profile', compact('users','medicine','meds'));
     }
      public function prescription($id){
        $medicine= DB::table('prescriptions')

@@ -12,6 +12,7 @@ use Yajra\Datatables\Datatables;
 use Nexmo\Laravel\Facade\Nexmo;
 use Carbon\Carbon;
 use App\User;
+use Mail;
 
 class profileController extends Controller
 {
@@ -35,40 +36,88 @@ class profileController extends Controller
 
      foreach($medicine as $med){
             $sched = explode('-' , $med->time);
-          foreach($sched as $i=>$key) {                   
+          foreach($sched as $i=>$key){                   
             if($key==strtolower($request->data)){ 
               $prescription =  Prescription::where('id', '=',$med->id)->first();
               $minutes = Carbon::now()->diffInMinutes($prescription->updated_at); 
-              if($minutes>=1){
-                $prescription->quantity = $prescription->quantity-$med->per_day;
-                  $prescription->save();  
-
-                  $patient= Patient::where('id', '=',$med->pid)->first();
-                  $contact = $patient->contact_number;
-                  try{
-                    Nexmo::message()->send([
-                        'to'   => $contact,
-                        'from' => 'Merin Pharmacy',
-                        'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity."pcs left in your possession.  - Merin Pharmacy"
-                    ]);                    
-                  }catch(\Exception $e){
-                       $data = array('name'=>"PharmASSIST",
-                        'email'=>"asidorx@gmail.com");
-                            Mail::send([],[],function($message) use ($data){
-                            $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                            ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
-                            $message->from('pharmassisthesis@gmail.com','PharmASSIST');
-                            }); 
+              if($minutes<=1 && $prescription->status!="Done"){
+               
+                if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity!=0){
+                 $prescription->quantity = $prescription->quantity-$med->per_day;
+                 $prescription->quantity_took=$prescription->quantity_took+$med->per_day;
+                 $prescription->save();  
+                 $patient= Patient::where('id', '=',$med->pid)->first();
+                 $contact = $patient->contact_number;
+                         if($prescription->quantity_took==$prescription->pres_quantity&&$prescription->quantity==0){
+                             $prescription->status = "Done";
+                             $prescription->save();
+                            var_dump($prescription->pres_quantity);
+                             try{
+                                Nexmo::message()->send([
+                                    'to'   => $contact,
+                                    'from' => 'Merin Pharmacy',
+                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to inform you that you have to taken all of your prescribed maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name."). Thank you for following the required schedule of the entire maintenance period. Have a nice day!  - Merin Pharmacy"
+                                ]);                    
+                              }catch(\Exception $e){
+                                   $data = array('name'=>"PharmASSIST",
+                                    'email'=>"asidorx@gmail.com");
+                                        Mail::send([],[],function($message) use ($data){
+                                        $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
+                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
+                                        $message->from('pharmassisthesis@gmail.com','PharmASSIST');
+                                        }); 
+                                }
+                            }
+                           else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity==0){
+                                $patient= Patient::where('id', '=',$med->pid)->first();
+                                $contact = $patient->contact_number;
+                                var_dump("WAALA NA");
+                                // ?var_dump($prescription->quantity_took);
+                                // var_dump($prescription->pres_quantity);
+                                // var_dump("hutdag tambal");
+                                try{
+                                Nexmo::message()->send([
+                                    'to'   => $contact,
+                                    'from' => 'Merin Pharmacy',
+                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have".$prescription->quantity." quantity of ".$prescription->generic_name."(".$prescription->brand_name.") in your possession. You need to refill your prescription to maintain your medication. Thank You.  - Merin Pharmacy"
+                                ]);                    
+                              }catch(\Exception $e){
+                                   $data = array('name'=>"PharmASSIST",
+                                    'email'=>"asidorx@gmail.com");
+                                        Mail::send([],[],function($message) use ($data){
+                                        $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
+                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
+                                        $message->from('pharmassisthesis@gmail.com','PharmASSIST');
+                                        }); 
+                                    }                    
+                            }else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity!=0){
+                               // var_dump("naa pa");
+                                 try{
+                            Nexmo::message()->send([
+                                'to'   => $contact,
+                                'from' => 'Merin Pharmacy',
+                                'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity."pcs left in your possession.  - Merin Pharmacy"
+                            ]);                    
+                          }catch(\Exception $e){
+                               $data = array('name'=>"PharmASSIST",
+                                'email'=>"asidorx@gmail.com");
+                                    Mail::send([],[],function($message) use ($data){
+                                    $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
+                                    ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
+                                    $message->from('pharmassisthesis@gmail.com','PharmASSIST');
+                                    }); 
+                                    }
+                            }
+                    
+                 
+                        }else if($prescription->quantity_took==$prescription->pres_quantity&&$prescription->quantity==0){
+                             $prescription->status = "Done";
+                             $prescription->save(); 
+                        }
+                    }
                 }
-              }
-            }
-              }
-
-           
-            }
-
-       
-
+            }      
+        }
     }
 
 

@@ -22,12 +22,14 @@ class CreatePrescriptionsTable extends Migration
             $table->string('dosage_form');
             $table->string('dosage_strength');
             $table->integer('pres_quantity');
+            $table->integer('quantity_took')->nullable();
             $table->integer('quantity')->nullable();
             $table->string('signa');
             $table->string('allergy')->nullable();
             $table->string('time')->nullable();
             $table->string('per_day')->nullable();
             $table->string('refill_check')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
