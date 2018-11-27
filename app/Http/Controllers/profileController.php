@@ -63,7 +63,7 @@ class profileController extends Controller
                                     'email'=>"asidorx@gmail.com");
                                         Mail::send([],[],function($message) use ($data){
                                         $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
+                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number: '.$contact);
                                         $message->from('pharmassisthesis@gmail.com','PharmASSIST');
                                         }); 
                                 }
@@ -86,7 +86,7 @@ class profileController extends Controller
                                     'email'=>"asidorx@gmail.com");
                                         Mail::send([],[],function($message) use ($data){
                                         $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
+                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number: '.$contact);
                                         $message->from('pharmassisthesis@gmail.com','PharmASSIST');
                                         }); 
                                     }                    
@@ -103,7 +103,7 @@ class profileController extends Controller
                                 'email'=>"asidorx@gmail.com");
                                     Mail::send([],[],function($message) use ($data){
                                     $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                                    ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number : 09477599352');
+                                    ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number :'.$contact);
                                     $message->from('pharmassisthesis@gmail.com','PharmASSIST');
                                     }); 
                                     }
