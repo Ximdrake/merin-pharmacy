@@ -110,6 +110,8 @@ class studentController extends Controller
          ->editColumn('status', function($data){
                     if($data->status==null){
                          return "On Going";
+                    }else{
+                        return "Done";
                     }
             
         })
