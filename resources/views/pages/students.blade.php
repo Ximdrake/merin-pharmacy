@@ -213,7 +213,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label font-xs">Drug per Day</label>
+                                    <label class="col-sm-4 col-form-label font-xs">Drug per Schedule</label>
                                     <div class="col-sm-8">
                                         <input name="per_day" id="per_day" type="text" class="form-control font-xs"
                                             placeholder="ex. 2">

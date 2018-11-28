@@ -109,8 +109,16 @@
         	//console.log(strTime);
         }else if (mins==55&&hours==12){
         	strTime = (1)+":00"+ampm;
-        }else if(mins==55&&hours!=12){
+        }else if(mins==55&&hours!=12&&hours!=11){
         	strTime = (hours+1)+":00"+ampm;
+        }else if(mins==55 && hours==11){
+        	var tigcheck=(hours+1)+":00"+ampm;
+  			if(tigcheck=="12:00am"){
+  				strTime = "12:00pm";
+  			}else if(tigcheck=="12:00pm"){
+  				strTime ="12:00am";
+  			}
+        	
         }
        $.ajax({
          headers: {
