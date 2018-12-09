@@ -43,11 +43,7 @@ class profileController extends Controller
                 var_dump($request->data);
               $prescription =  Prescription::where('id', '=',$med->id)->first();
               $minutes = Carbon::now()->diffInMinutes($prescription->updated_at); 
-              if($minutes>=1 && $prescription->status!="Done"){
-                echo "maoni";
-
-                var_dump("DIRI RA KUTOB");
-             
+              if($minutes>=2 && $prescription->status!="Done"){
                  $prescription->quantity = $prescription->quantity-$med->per_day;
                  $prescription->quantity_took=$prescription->quantity_took+$med->per_day;
                  
@@ -57,13 +53,14 @@ class profileController extends Controller
                              $prescription->status = "Done";
                              $prescription->save();
                             $patient= Patient::where('id', '=',$med->pid)->first();
+                            $patient->status="Done";
+                            $patient->save();
                             $contact = $patient->contact_number;
-                            var_dump("humana".$contact." ".$patient->firstname);
-                             try{
+                                 try{
                                 Nexmo::message()->send([
                                     'to'   => $contact,
                                     'from' => 'Merin Pharmacy',
-                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to inform you that you have to taken all of your prescribed maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name."). Thank you for following the required schedule of the entire maintenance period. Have a nice day!  - Merin Pharmacy"
+                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key.". You have taken all of your prescribed maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name."). Thank you for following the required schedule of the entire maintenance period. Have a nice day!  - Merin Pharmacy"
                                 ]);                    
                               }catch(\Exception $e){
                                    $data = array('name'=>"PharmASSIST",
@@ -74,17 +71,17 @@ class profileController extends Controller
                                         $message->from('pharmassisthesis@gmail.com','PharmASSIST');
                                         }); 
                                 }
+                                      
                              
                             }else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity==0){
                                 $prescription->save();  
                                 $patient= Patient::where('id', '=',$med->pid)->first();
                                 $contact = $patient->contact_number;
-                                var_dump("WAALA NA".$contact.$patient->firstname);
                                  try{
                                 Nexmo::message()->send([
                                     'to'   => $contact,
                                     'from' => 'Merin Pharmacy',
-                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to inform you that you have 0 quantity left in your possession of ".$prescription->generic_name."(".$prescription->brand_name."). You need to refill your prescription to maintain your medication. Have a nice day!  - Merin Pharmacy"
+                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You  have " .$prescription->quantity." left in your possession. You need to refill your prescription to maintain your medication. Have a nice day!  - Merin Pharmacy"
                                 ]);                    
                               }catch(\Exception $e){
                                    $data = array('name'=>"PharmASSIST",
@@ -100,7 +97,6 @@ class profileController extends Controller
                                  $prescription->save();
                                  $patient= Patient::where('id', '=',$med->pid)->first();
                                 $contact = $patient->contact_number;
-                                var_dump("naa pa".$contact.$patient->firstname);
                                        try{
                             Nexmo::message()->send([
                                 'to'   => $contact,
