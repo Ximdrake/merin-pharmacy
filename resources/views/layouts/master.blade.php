@@ -102,10 +102,10 @@
     hours = hours % 12;
     hours = hours ? hours : 12;
     var strTime;
-    if(mins==25||mins==55){
+    if(mins==37||mins==55){
     	
-    	if(mins==25){
-        	strTime = (hours)+":"+(mins+5)+ampm;
+    	if(mins==37){
+        	strTime = (hours)+":"+(mins)+ampm;
         	//console.log(strTime);
         }else if (mins==55&&hours==12){
         	strTime = (1)+":00"+ampm;
