@@ -43,7 +43,7 @@ class profileController extends Controller
                 var_dump($request->data);
               $prescription =  Prescription::where('id', '=',$med->id)->first();
               $minutes = Carbon::now()->diffInMinutes($prescription->updated_at); 
-              if($minutes<=1 && $prescription->status!="Done" && $prescription->quantity>=1){
+              if($minutes>=2 && $prescription->status!="Done" && $prescription->quantity>=1){
                  $prescription->quantity = $prescription->quantity-$med->per_day;
                  $prescription->quantity_took=$prescription->quantity_took+$med->per_day;
                  
@@ -58,19 +58,19 @@ class profileController extends Controller
                             $contact = $patient->contact_number;
                             var_dump("humana");
                                  try{
-                                // Nexmo::message()->send([
-                                //     'to'   => $contact,
-                                //     'from' => 'Merin Pharmacy',
-                                //     'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key.". You have taken all of your prescribed maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name."). Thank you for following the required schedule of the entire maintenance period. Have a nice day!  - Merin Pharmacy"
-                                // ]);                    
+                                Nexmo::message()->send([
+                                    'to'   => $contact,
+                                    'from' => 'Merin Pharmacy',
+                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key.". You have taken all of your prescribed maintenance medicine ".$prescription->generic_name."(".$prescription->brand_name."). Thank you for following the required schedule of the entire maintenance period. Have a nice day!  - Merin Pharmacy"
+                                ]);                    
                               }catch(\Exception $e){
-                                   // $data = array('name'=>"PharmASSIST",
-                                   //  'email'=>"asidorx@gmail.com");
-                                   //      Mail::send([],[],function($message) use ($data){
-                                   //      $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                                   //      ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number: '.$contact);
-                                   //      $message->from('pharmassisthesis@gmail.com','PharmASSIST');
-                                   //      }); 
+                                   $data = array('name'=>"PharmASSIST",
+                                    'email'=>"asidorx@gmail.com");
+                                        Mail::send([],[],function($message) use ($data){
+                                        $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
+                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number: '.$contact);
+                                        $message->from('pharmassisthesis@gmail.com','PharmASSIST');
+                                        }); 
                                 }
                                       
                              
@@ -80,19 +80,19 @@ class profileController extends Controller
                                 $contact = $patient->contact_number;
                                  try{
                                     var_dump("hurot na");
-                                // Nexmo::message()->send([
-                                //     'to'   => $contact,
-                                //     'from' => 'Merin Pharmacy',
-                                //     'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You  have " .$prescription->quantity." left in your possession. You need to refill your prescription to maintain your medication. Have a nice day!  - Merin Pharmacy"
-                                // ]);                    
+                                Nexmo::message()->send([
+                                    'to'   => $contact,
+                                    'from' => 'Merin Pharmacy',
+                                    'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You  have " .$prescription->quantity." left in your possession. You need to refill your prescription to maintain your medication. Have a nice day!  - Merin Pharmacy"
+                                ]);                    
                               }catch(\Exception $e){
-                                   // $data = array('name'=>"PharmASSIST",
-                                   //  'email'=>"asidorx@gmail.com");
-                                   //      Mail::send([],[],function($message) use ($data){
-                                   //      $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                                   //      ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number: '.$contact);
-                                   //      $message->from('pharmassisthesis@gmail.com','PharmASSIST');
-                                   //      }); 
+                                   $data = array('name'=>"PharmASSIST",
+                                    'email'=>"asidorx@gmail.com");
+                                        Mail::send([],[],function($message) use ($data){
+                                        $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
+                                        ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number: '.$contact);
+                                        $message->from('pharmassisthesis@gmail.com','PharmASSIST');
+                                        }); 
                                 }
                                       
                             }else if($prescription->quantity_took!=$prescription->pres_quantity&&$prescription->quantity!=0){
@@ -101,19 +101,19 @@ class profileController extends Controller
                                 $contact = $patient->contact_number;
                                        try{
                                         var_dump("padayun pa");
-                            // Nexmo::message()->send([
-                            //     'to'   => $contact,
-                            //     'from' => 'Merin Pharmacy',
-                            //     'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity." left in your possession.  - Merin Pharmacy"
-                            // ]);                    
+                            Nexmo::message()->send([
+                                'to'   => $contact,
+                                'from' => 'Merin Pharmacy',
+                                'text' => 'Good Day Mr/Mrs. '.$patient->firstname." ".$patient->lastname.", "."This is to remind you that you have to take your maintenance medicine (".$prescription->per_day.") ".$prescription->generic_name."(".$prescription->brand_name.") at exactly ".$key." You have ".$prescription->quantity." left in your possession.  - Merin Pharmacy"
+                            ]);                    
                           }catch(\Exception $e){
-                               // $data = array('name'=>"PharmASSIST",
-                               //  'email'=>"asidorx@gmail.com");
-                               //      Mail::send([],[],function($message) use ($data){
-                               //      $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
-                               //      ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number :');
-                               //      $message->from('pharmassisthesis@gmail.com','PharmASSIST');
-                               //      }); 
+                               $data = array('name'=>"PharmASSIST",
+                                'email'=>"asidorx@gmail.com");
+                                    Mail::send([],[],function($message) use ($data){
+                                    $message->to($data['email'],'Hello Mr/Mrs '.$data['name'])->subject('Message Sending Error!'.$data['name'])
+                                    ->setBody('The system failed to send the message to the patient due to service providers technical problem, you can remind him/her via personal text. Patient number :');
+                                    $message->from('pharmassisthesis@gmail.com','PharmASSIST');
+                                    }); 
                                     }
                             }
                 }else{
